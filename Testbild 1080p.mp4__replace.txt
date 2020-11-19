@@ -1,0 +1,6 @@
+replace this file with an actual test pattern video !
+
+(I didn't include the one I use, as I'm not sure if 
+it is public domain. this file is not required to run 
+the Halloween Player anyway. it's only used if 'goTB' 
+is called to show this file.)
