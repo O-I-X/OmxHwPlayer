@@ -2,7 +2,7 @@
 
 # this script is intended to be called in the context of
 # the calling bash. thus all variables are not script-local
-# and would exist after script is done. thats way variables
+# and would exist after script is done. thats why variables
 # are explicitly unset at the end.
 
 GLOBAL_DIR=/usr/local/share

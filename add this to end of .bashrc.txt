@@ -1,0 +1,2 @@
+# autostart the OmxHwPlayer
+. OmxHwPlayer/autostart.inc

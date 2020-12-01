@@ -9,6 +9,7 @@ alias phide='. setprompt.sh hide'
 alias pshow='. setprompt.sh'
 alias gohw='phide && cd ~/OmxHwPlayer && ./OmxHwPlayer >/dev/null 2>&1'
 alias gotb='omxplayer -o hdmi -w -b --loop ~/OmxHwPlayer/Testbild\ 1080p.mp4'
+alias killhw='killall -2 -q OmxHwPlayer omxplayer.bin fbi'
 
 # check if this session is local or via network
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
