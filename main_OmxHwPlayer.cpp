@@ -75,7 +75,7 @@ void on_switch_pressed()
       g_log<<CT<<" ("<<uPressed<<") QUIT switch pressed! Goodbye :)\n"<<flush;
       g_log.close();
     }
-    system("killall -9 OmxHwPlayer omxplayer.bin fbi");
+    system("killall -2 OmxHwPlayer omxplayer.bin fbi");
   } else {
     if(g_log.is_open()) {
       g_log<<CT<<" ("<<uPressed<<") shutdown switch pressed! Goodbye :)\n"<<flush;
@@ -110,8 +110,8 @@ void on_PIR_triggered()
   }
 }
 
-const ulong RESTART_TIMEOUT = 30000;    // 30s
-const ulong LURE_TIMEOUT = 300000;      // 5min
+const ulong RESTART_TIMEOUT = 20000;    // 20s
+const ulong LURE_TIMEOUT = 180000;      // 3min
 
 int main(int argc, char** argv)
 {
@@ -123,14 +123,29 @@ int main(int argc, char** argv)
   UPD_CT;
   g_log<<CT<<" ("<<uCurTime<<") OmxHwPlayer started\n";
 
-  string strVidDir="./";
   vector<string> vecIdleList;
   vector<string> vecLureList;
   vector<string> vecVideoList;
 
-  if(argc>1) {                 // any command line argument means 'wait for an USB stick'
+  string strVidDir="./";
+  bool bUseUsb=false;
+  for(int i=1; i<argc; ++i)
+    if(string(argv[i])=="usb") {
+      bUseUsb=true;
+      g_log<<CT<<" ("<<uCurTime<<") INFO: use of USB jump drive forced by parameter.\n";
+    }
+
+  if(!bUseUsb) {                      // with no USB forced, try local videos first
+    GetVideoList(vecVideoList, strVidDir+"Videos/");
+    if(!vecVideoList.size()) {        // if there are no local video files
+      bUseUsb=true;                   // try to get them from the USB drive
+      g_log<<CT<<" ("<<uCurTime<<") INFO: no local videos - lets try USB jump drive.\n";
+    }
+  }
+
+  if(bUseUsb) {                       // USB was forced or no local videos were found
     uCurTime=GetMsTimeTicks(); UPD_CT;
-    g_log<<CT<<" ("<<uCurTime<<") waiting for USB-stick ...\n"<<flush;
+    g_log<<CT<<" ("<<uCurTime<<") INFO: waiting for USB-stick ...\n"<<flush;
     string strUsbDir;
     while(true) {
       strUsbDir="/media/";
@@ -142,23 +157,25 @@ int main(int argc, char** argv)
 //      strVidDir=strUsbDir+vecIdleList[0]+'/';
         strVidDir=strUsbDir;
       uCurTime=GetMsTimeTicks(); UPD_CT;
-      g_log<<CT<<" ("<<uCurTime<<") found USB-stick @ "<<strVidDir<<"\n"<<flush;
+      g_log<<CT<<" ("<<uCurTime<<") INFO: found USB-stick @ "<<strVidDir<<"\n"<<flush;
       break;
     }
+    GetVideoList(vecVideoList, strVidDir+"Videos/");
   }
 
-  GetVideoList(vecIdleList, strVidDir+"Idle/");
-  GetVideoList(vecLureList, strVidDir+"Timed/");
-  GetVideoList(vecVideoList, strVidDir+"Videos/");
-
-  const uint uNumIdle=vecIdleList.size();
-  const uint uNumLure=vecLureList.size();
   const uint uNumVid=vecVideoList.size();
   if(!uNumVid) {
-    g_log<<CT<<" ("<<uCurTime<<") ERROR: No videos!\n"<<flush;
+    g_log<<CT<<" ("<<uCurTime<<") ERROR: No videos! :/ Goodbye\n"<<flush;
     g_log.close();
     return 1;
   }
+
+  // load optional idle- and lure videos
+  GetVideoList(vecIdleList, strVidDir+"Idle/");
+  GetVideoList(vecLureList, strVidDir+"Timed/");
+
+  const uint uNumIdle=vecIdleList.size();
+  const uint uNumLure=vecLureList.size();
 
   g_log<<"found "<<uNumIdle<<" idle files:\n";
   for(uint u=0; u<uNumIdle; ++u)
@@ -220,7 +237,7 @@ int main(int argc, char** argv)
     UPD_CT;
 
     if(uNumIdle>1) {                                         // remove a possible idle-image from console
-      system("killall -9 fbi");                              // as the next will be a different one for sure
+      system("killall -2 fbi");                              // as the next will be a different one for sure
       thread(FbiImageShow, strVidDir+"blank.png").detach();  // kill fbi first, then overwrite its last image
     }                                                        // (witch remains on display) with a black picture
 
@@ -230,7 +247,7 @@ int main(int argc, char** argv)
         if(uLastVid>=uNumVid) uLastVid-=uNumVid;
       }
       if(g_log.is_open()) g_log<<CT<<" ("<<uCurTime<<") play(V) #"<<uLastVid<<endl;
-      static const string PLAY="killall -9 omxplayer.bin; omxplayer -o hdmi -w -b --no-osd "+strVidDir+"Videos/";
+      static const string PLAY="killall -2 omxplayer.bin; omxplayer -o hdmi -w -b --no-osd "+strVidDir+"Videos/";
       system((PLAY+vecVideoList[uLastVid]).c_str());      // kill a running player and start new video
       uCurTime=GetMsTimeTicks();
       uVidTimeOut=uCurTime+RESTART_TIMEOUT;               // set normal restart suppression timout to prevent continuous playback
@@ -240,7 +257,7 @@ int main(int argc, char** argv)
         if(uLastLure>=uNumLure) uLastLure-=uNumLure;
       }
       if(g_log.is_open()) g_log<<CT<<" ("<<uCurTime<<") play(L) #"<<uLastLure<<endl;
-      static const string LURE="killall -9 omxplayer.bin; omxplayer -o local -w -b --no-osd "+strVidDir+"Timed/";
+      static const string LURE="killall -2 omxplayer.bin; omxplayer -o local -w -b --no-osd "+strVidDir+"Timed/";
       system((LURE+vecLureList[uLastLure]).c_str());      // kill a running player and start lure video (w/o audio)
       uCurTime=GetMsTimeTicks();
       uVidTimeOut=uCurTime+RESTART_TIMEOUT/3;             // set shortened restart suppression timout after an lure video

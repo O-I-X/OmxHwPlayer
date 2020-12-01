@@ -2,7 +2,7 @@
 ## Omx-Halloween-Player
 #### (for Raspberry Pi)
 
-version 0.9.0</center>
+version 0.9.1</center>
 
 **Installation:**  
 
@@ -12,8 +12,9 @@ version 0.9.0</center>
 - video files and images have to be in subfolders Idle, Timed and Videos 
   in the players work directory (~/OmxHwPlayer) or in the root of an 
   USB jump drive
-- when using a USB jump drive, add its UUID to the fstab file to allow 
-  auto mounting during boot directly under /media.
+- when using an USB jump drive, the system has to auto-mount such drives
+  (ie. using udev.rules) or you have to add the drives UUID to the fstab 
+  file to allow mounting during boot-up directly under /media.
   (ie. UUID=A3C0-96B1   /media   auto  nosuid,nodev,nofail,noatime  0 0)
 - you must add 'usb' as parameter to start the player using the videos 
   from the jump drive (i.e. by adding it to the 'gohw'-alias in 
