@@ -2,17 +2,28 @@
 ## Omx-Halloween-Player
 #### (for Raspberry Pi)
 
-version 0.1.0</center>
+version 0.9.0</center>
 
 **Installation:**  
 
 - place the setprompt.sh script in /usr/local/bin/  
-  (it hides & restores the console command prompt and cursor. otherwise
-   one could see the terminal for a brief moment inbetween videos) 
-- video files have to be in subfolders named Buffer, Timed and Videos 
-  in the players work directory (~/OmxHwPlayer)
+  (it hides & restores the console command prompt and cursor. otherwise 
+   one could see the terminal for a brief moment inbetween videos)
+- video files and images have to be in subfolders Idle, Timed and Videos 
+  in the players work directory (~/OmxHwPlayer) or in the root of an 
+  USB jump drive
+- when using a USB jump drive, add its UUID to the fstab file to allow 
+  auto mounting during boot directly under /media.
+  (ie. UUID=A3C0-96B1   /media   auto  nosuid,nodev,nofail,noatime  0 0)
+- you must add 'usb' as parameter to start the player using the videos 
+  from the jump drive (i.e. by adding it to the 'gohw'-alias in 
+  autostart.inc), when there are also videos in the players work 
+  directory. otherwise the player will always use the local video files. 
+  only if there are no local videos, you can omit the 'usb' parameter, 
+  as the player tries to find videos under /media when there are no local 
+  files.
 - make sure .bashrc sources the autostart.inc file as its last instruction
-- make sure omxplayer is installed
+- make sure omxplayer and fbi (frame buffer image viewer) are installed
 
 
 **Alias commands:**  
@@ -28,10 +39,16 @@ version 0.1.0</center>
 make sure the GPIOs are enabled in the RPi configuration.
 the PIR motion sensor that triggers the video playback has to be 
 connected to pin 1 (wiringPi number system).
-you may also connect a LOW-active button (switch against GND) to pin 0.  
-- press & hold the button during (usually auto-) login, will prevent the 
-  player to be autostarted and to go to normal command prompt instead  
-- press while halloween player is running, will shutdown the Raspberry
+you may also connect a LOW-active button (switch against GND) to pin 0.
+
+- press & hold the buton during (usually auto-) login, will prevent the 
+  player to be autostarted and to go to normal command prompt instead
+- press for less than 5 seconds while halloween player is running, will 
+  quit the player. ( note: I have not figured out yet, how to reliably 
+  return to the console when fbi was using the framebuffer to display 
+  images. :/ )
+- press for more than 5 seconds while halloween player is running, will 
+  shutdown the Raspberry
 
 **General info:**  
 
@@ -43,16 +60,18 @@ in case there are videos present in the 'Timed' directory, they will be
 played by random selection, when there was no normal video triggered for 
 3 minutes.
 
-if there is a video file in the 'Buffer' directory, it is played as loop, 
-while no other video playback is active.
+if there are video or image files in the 'Idle' directory, one is randomly 
+selected and displayed (images) or played as loop (video), while no other 
+video playback is active.
 
 except for the timed videos, audio is send via HDMI to the projector. thus, 
 timed videos are silent when no speakers are connected to the local, analog 
-audio out of the Pi or when a RPi Zero is used.  
+
+audio out of the Pi or when a RPi Zero is used.
 (as the player is meant for digital Halloween decoration, I didn't want to 
 annoy the neighborhood with frequent audio when no trick-and-treaters are 
-around actually. thus, pay attention what video clip you put into the 
-'Buffer' directory, as this video plays audio, to allow for instance the 
+around actually. thus, pay attention what video clips you put into the 
+'Idle' directory, as those videos play audio, to allow for instance the 
 faint sparkling of a fireplace or from a jack-o-lantern illumination)
 
 while the files are always selected by random, the player will not show the 
@@ -71,4 +90,5 @@ feel free to add your own functionality to the player.
 to compile the program:  
 ***  g++ -Wall -o OmxHwPlayer main_OmxHwPlayer.cpp -lwiringPi -lpthread  ***
 
-player was tested und used with a **RPi B rev.1** and a **RPi Zero**.
+player was tested and used with a **RPi B rev.1** and a **RPi Zero**.
+
