@@ -1,8 +1,9 @@
 <center>
-## Omx-Halloween-Player
-#### (for Raspberry Pi)
+##Omx-Halloween-Player
+###(for Raspberry Pi)
 
-version 1.0.0</center>
+version 1.0.0
+</center>
 
 **Installation:**  
 
@@ -26,9 +27,9 @@ version 1.0.0</center>
 - the player will look for USB video directories in /media, /media/USER, 
   /media/DRIVE_NAME and /media/USER/DRIVE_NAME
 - make sure omxplayer and fbi (frame buffer image viewer) are installed
-- make sure .bashrc sources the autostart.inc file as its last instruction
-  # autostart the OmxHwPlayer
-  . OmxHwPlayer/autostart.inc
+- make sure .bashrc sources the autostart.inc file as its last instruction  
+   `# autostart the OmxHwPlayer`  
+   `. OmxHwPlayer/autostart.inc`
 
 
 **Alias commands:**  
@@ -37,7 +38,7 @@ version 1.0.0</center>
   **pshow** : show the command prompt and console again  
   **gohw**  : manually start the Halloween player  
   **gotb**  : show a 1080p test pattern with pilot tone  
-              (handy to setup the projector)
+              (handy to setup the projector)  
   **killhw**: kill all halloween player processes
 
 
@@ -113,11 +114,9 @@ kept it in the scripts (just in case and it doesn't hurt).
 
 feel free to add your own functionality and improvements to the player.  
 to compile the program:  
-***  g++ -Wall -o OmxHwPlayer main_OmxHwPlayer.cpp -lwiringPi -lpthread  ***
+: ***g++ -Wall -o OmxHwPlayer main_OmxHwPlayer.cpp -lwiringPi -lpthread***  
 (to cross compile, replace 'g++' with 'arm-linux-gnueabi-g++ -std=c++11'
  and make sure the host system has access to the matching ld-linux.so, 
  libpthread.so and libwiringPi.so)
 
 player was tested and used with a **RPi B rev.1** and a **RPi Zero W**.
-
-
