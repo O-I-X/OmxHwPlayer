@@ -5,21 +5,35 @@
 version 1.0.0
 </center>
 
-**Installation:**  
+**Genaral Description**  
+
+this little tool can control a projector for your digital Halloween 
+decoration using a Raspberry Pi.  
+
+it will play a video file when triggered by an external signal, like 
+a motion sensor for instance. inbetween such triggered action videos, 
+the player can display nothing or an idle image or video loop. and if 
+no video is triggered for a certain time, it can play a short clip to 
+lure some trick-r-treaters.
+
+![gh_social_preview](https://repository-images.githubusercontent.com/317739699/cf9e0580-34ef-11eb-9f2f-1478599c9057 "Halloween 2020")
+
+
+**Setup:**  
 
 - place the setprompt.sh script in /usr/local/bin/  
   (it hides & restores the console command prompt and cursor. otherwise 
    one could see the terminal for a brief moment inbetween videos)
-- video files and images have to be in subfolders called "Idle", "Lure" 
-  and "Action" in the players work directory (~/OmxHwPlayer) or in the 
-  root of an USB jump drive.
+- video files and images have to be in subfolders called "**Idle**", 
+  "**Lure**" and "**Action**" in the players work directory (~/OmxHwPlayer) 
+  or in the root of an USB jump drive.
 - when using an USB jump drive, the system has to auto-mount such drives
   (ie. using udev.rules) or you have to add the drives UUID to the fstab 
   file to allow mounting during boot-up directly under /media.
   (ie. UUID=A3C0-96B1   /media   auto  nosuid,nodev,nofail,noatime  0 0)
 - when there are also videos in the players work directory, you have to 
   add 'usb' as parameter to start the player using the videos from the 
-  jump drive (i.e. by adding it to the 'gohw'-alias in autostart.inc), 
+  jump drive (i.e. by adding it to the '**gohw**'-alias in autostart.inc), 
   otherwise the player will always use the local video files.
   only if there are no local videos, you can omit the 'usb' parameter, 
   as the player tries to find videos under /media when there are no local 
@@ -28,18 +42,10 @@ version 1.0.0
   /media/DRIVE_NAME and /media/USER/DRIVE_NAME
 - make sure omxplayer and fbi (frame buffer image viewer) are installed
 - make sure .bashrc sources the autostart.inc file as its last instruction  
-   `# autostart the OmxHwPlayer`  
-   `. OmxHwPlayer/autostart.inc`
-
-
-**Alias commands:**  
-
-: **phide** : hide the command prompt and the console  
-  **pshow** : show the command prompt and console again  
-  **gohw**  : manually start the Halloween player  
-  **gotb**  : show a 1080p test pattern with pilot tone  
-              (handy to setup the projector)  
-  **killhw**: kill all halloween player processes
+  ```bash
+  # autostart the OmxHwPlayer  
+  . OmxHwPlayer/autostart.inc
+  ```
 
 
 **Wiring:**  
@@ -61,7 +67,17 @@ you may also connect a LOW-active button (switch against GND) to pin 0.
   running, will shutdown Raspberry.
 
 
-**General info:**  
+**Alias commands:**  
+
+: **phide** : hide the command prompt and the console  
+  **pshow** : show the command prompt and console again  
+  **gohw**  : manually start the Halloween player  
+  **gotb**  : show a 1080p test pattern with pilot tone  
+              (handy to setup the projector)  
+  **killhw**: kill all halloween player processes
+
+
+**Detailed info:**  
 
 the player will show a randomly selected video from the 'Action' directory, 
 each time the PIR sensor is triggered. after video finishes, there is a 
