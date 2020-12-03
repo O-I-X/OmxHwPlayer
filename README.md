@@ -1,11 +1,11 @@
 <center>
-##Omx-Halloween-Player
-###(for Raspberry Pi)
-
-version 1.0.0
+### Omx-Halloween-Player
+**(for Raspberry Pi)**
+###### version 1.0.0
+---
 </center>
 
-**Genaral Description**  
+**General Description**  
 
 this little tool can control a projector for your digital Halloween 
 decoration using a Raspberry Pi.  
@@ -18,6 +18,9 @@ lure some trick-r-treaters.
 
 ![gh_social_preview](https://repository-images.githubusercontent.com/317739699/cf9e0580-34ef-11eb-9f2f-1478599c9057 "Halloween 2020")
 
+YouTube: [Halloween 2020](https://youtu.be/LF7gJCLdbK8)
+
+---
 
 **Setup:**  
 
@@ -47,7 +50,6 @@ lure some trick-r-treaters.
   . OmxHwPlayer/autostart.inc
   ```
 
-
 **Wiring:**  
 
 make sure the GPIOs are enabled in the RPi configuration.
@@ -69,13 +71,13 @@ you may also connect a LOW-active button (switch against GND) to pin 0.
 
 **Alias commands:**  
 
-: **phide** : hide the command prompt and the console  
-  **pshow** : show the command prompt and console again  
-  **gohw**  : manually start the Halloween player  
-  **gotb**  : show a 1080p test pattern with pilot tone  
-              (handy to setup the projector)  
-  **killhw**: kill all halloween player processes
-
+>**phide**  : hide the command prompt and the console  
+>**pshow** : show the command prompt and console again  
+>**gohw**  : manually start the Halloween player  
+>**gotb**  : show a 1080p test pattern with pilot tone  
+>            (handy to setup the projector)  
+>**killhw** : kill all halloween player processes
+ 
 
 **Detailed info:**  
 
@@ -127,12 +129,13 @@ hiding console prompt and cursor belongs to earlier versions (0.x.x) of
 the Halloween Player. meanwhile it is not really required anymore, but I
 kept it in the scripts (just in case and it doesn't hurt). 
 
+---
 
 feel free to add your own functionality and improvements to the player.  
 to compile the program:  
-: ***g++ -Wall -o OmxHwPlayer main_OmxHwPlayer.cpp -lwiringPi -lpthread***  
-(to cross compile, replace 'g++' with 'arm-linux-gnueabi-g++ -std=c++11'
- and make sure the host system has access to the matching ld-linux.so, 
- libpthread.so and libwiringPi.so)
+> **g++ -Wall -o OmxHwPlayer main_OmxHwPlayer.cpp -lwiringPi -lpthread**  
+*(to cross compile, replace '**g++**' with '**arm-linux-gnueabi-g++ 
+-std=c++11**' and make sure the host system has access to the matching 
+ld-linux.so, libpthread.so and libwiringPi.so)*
 
 player was tested and used with a **RPi B rev.1** and a **RPi Zero W**.
